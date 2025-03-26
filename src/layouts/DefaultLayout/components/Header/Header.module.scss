@@ -1,0 +1,95 @@
+.headerMain {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  margin: 0;
+}
+
+//Search Bar
+.searchBar {
+  background: #fff;
+  border-radius: 50px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  border: 1px solid rgba(113, 113, 113, 0.3);
+  margin-left: 15%;
+}
+
+.option {
+  padding: 10px 16px;
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+    color: #222;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+
+  &:hover a {
+    color: #ff385c;
+  }
+}
+
+.text-secondary a {
+  color: #717171;
+}
+
+.btnSearch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: #ff385c;
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s;
+
+  &:hover {
+    background: #e03149;
+  }
+
+  i {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+
+//UserNavigation
+.hostBtn {
+  color: currentColor;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 10px 15px;
+  &:hover {
+    background-color: #f3f0f0;
+    transition: background-color 0.3s ease;
+  }
+}
+.btnLanguage {
+  border: none;
+  background-color: transparent;
+  border-radius: 22px;
+  padding: 15px;
+  &:hover {
+    background-color: #f3f0f0;
+    transition: background-color 0.3s ease;
+  }
+}
+
+.btnUser {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  padding: 20px 12px;
+
+  &:hover {
+    transition: box-shadow 0.3s ease-in-out, transform 0.1s ease-in-out;
+  }
+}

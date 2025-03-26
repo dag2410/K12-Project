@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  overflow-x: auto;
+  padding: 20px;
+}
