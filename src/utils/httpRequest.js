@@ -7,18 +7,27 @@ const httpRequest = axios.create({
   },
 });
 
-const send = async (method, url, data, config) => {
-  const response = await httpRequest.request({
-    method,
-    url,
-    data,
-    ...config,
-  });
-  if (response.status >= 200 && response.status < 400) {
-    return response.data;
-  }
+export const setToken = (token) => {
+  localStorage.setItem("token", token);
+  httpRequest.defaults.headers["Authorization"] = `Bearer ${token}`;
+};
+export const clearToken = () => {
+  delete httpRequest.defaults.headers["Authorization"];
+  console.log("Token", httpRequest.defaults.headers);
+};
 
-  // Handle errors
+const send = async (method, url, data, config) => {
+  try {
+    const response = await httpRequest.request({
+      method,
+      url,
+      data,
+      ...config,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const get = (url, config) => {
@@ -41,11 +50,6 @@ export const del = (url, config) => {
   return send("delete", url, null, config);
 };
 
-export const setToken = (token) => {
-  httpRequest.defaults.headers["Authorization"] = `Bearer ${token}`;
-  localStorage.setItem("token", token);
-};
-
 export default {
   get,
   post,
@@ -53,4 +57,5 @@ export default {
   patch,
   del,
   setToken,
+  clearToken,
 };

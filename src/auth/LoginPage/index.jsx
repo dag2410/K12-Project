@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useQuery from "@/hooks/useQuery";
 import httpRequest, { setToken } from "@/utils/httpRequest";
+import config from "@/config";
+import authService from "@/service/authService";
 
 const LoginPage = () => {
   const query = useQuery();
@@ -10,27 +12,15 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    fetch("https://api01.f8team.dev/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Email hoặc mật khẩu không hợp lệ.");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem("token", data.access_token);
-        setToken(data.access_token);
-        navigate(query.get("continue") || "/");
-      })
-      .catch((err) => {
-        setErr(err.message);
-      });
+    try {
+      const res = await authService.postLogIn(email, password);
+      httpRequest.setToken(res.access_token);
+      navigate(query.get("continue") || config.routes.home);
+    } catch (error) {
+      setErr(error.response?.data?.message || "Đăng nhập thất bại.");
+    }
   };
 
   return (

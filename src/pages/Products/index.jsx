@@ -10,7 +10,6 @@ function Products() {
     const fetchData = async () => {
       const res = await productService.getAll();
       setProducts(res.data);
-      console.log(res);
     };
     fetchData();
   }, []);

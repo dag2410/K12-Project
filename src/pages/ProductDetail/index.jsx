@@ -1,20 +1,23 @@
+import productService from "@/service/productService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function ProductDetail() {
-  const [products, setProduct] = useState({});
+  const [product, setProduct] = useState({});
   const params = useParams();
 
   useEffect(() => {
-    fetch(`https://api01.f8team.dev/api/products/${params.slug}`)
-      .then((res) => res.json())
-      .then((data) => setProduct(data));
+    const fetchData = async () => {
+      const res = await productService.getOne(params.slug);
+      setProduct(res);
+    };
+    fetchData();
   }, [params.slug]);
 
   return (
     <div>
-      <h1>{products.title}</h1>
-      <img src={products.thumbnail}></img>
+      <h1>{product.title}</h1>
+      <img src={product.thumbnail}></img>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import Loading from "@/components/Loading";
+import authService from "@/service/authService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,29 +34,17 @@ const RegisterPage = () => {
     if (errorMessage) {
       setErr(errorMessage);
       setLoading(false);
-
       return;
     }
 
     const { firstName, lastName } = splitName(fullName);
     const formData = { firstName, lastName, email, password, password_confirmation };
-
     try {
-      const res = await fetch("https://api01.f8team.dev/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Đăng ký thất bại!");
-      }
-
-      localStorage.setItem("token", data.access_token);
+      const res = await authService.postRegister(formData);
+      localStorage.setItem("token", res.access_token);
       navigate("/");
     } catch (err) {
-      setErr(err.message);
+      setErr(err.message || "dang ki that bai");
     } finally {
       setLoading(false);
     }
