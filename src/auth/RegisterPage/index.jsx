@@ -1,82 +1,116 @@
+import { InputText } from "@/components/InputText";
 import Loading from "@/components/Loading";
-import authService from "@/service/authService";
-import { useState } from "react";
+import { registerSchema } from "@/schema";
+import authService, { checkEmail } from "@/service/authService";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+let timerId;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password_confirmation, setPassword_confirmation] = useState("");
-  const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
-  const splitName = (fullName) => {
-    const parts = fullName.trim().split(" ");
-    const firstName = parts.pop();
-    const lastName = parts.join(" ");
-    return { firstName, lastName };
-  };
-  const validateForm = () => {
-    if (!fullName.trim()) return "Vui lòng nhập họ và tên";
-    if (!email.includes("@")) return "Email không hợp lệ";
-    if (password.length < 8) return "Mật khẩu phải đủ 8 kí tự";
-    if (password_confirmation !== password) return "Mật khẩu nhập lại không trùng với mật khẩu trên";
-    return "";
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
+    resolver: yupResolver(registerSchema),
+  });
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  const onRegister = async (data) => {
     setLoading(true);
-    setErr(null);
-
-    const errorMessage = validateForm();
-    if (errorMessage) {
-      setErr(errorMessage);
-      setLoading(false);
-      return;
-    }
-
-    const { firstName, lastName } = splitName(fullName);
-    const formData = { firstName, lastName, email, password, password_confirmation };
     try {
-      const res = await authService.postRegister(formData);
-      localStorage.setItem("token", res.access_token);
-      navigate("/");
-    } catch (err) {
-      setErr(err.message || "dang ki that bai");
+      const exists = await authService.checkEmail(data.email);
+      if (exists) {
+        setError("email", {
+          type: "manual",
+          message: "Email này đã tồn tại",
+        });
+        setLoading(false);
+
+        return;
+      }
+
+      const response = await authService.postRegister(data);
+      if (response.status === "success") {
+        localStorage.setItem("token", response.access_token);
+        navigate("/");
+      } else {
+        setError("email", {
+          type: "manual",
+          message: response.message || "Đăng kí thất bại",
+        });
+      }
+    } catch (error) {
+      setError("email", {
+        type: "manual",
+        message: "Đăng kí thất bại  ",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  return (
+  const emailValue = watch("email");
+
+  useEffect(() => {
+    if (!emailValue) return;
+    clearTimeout(timerId);
+    timerId = setTimeout(async () => {
+      const isValid = await trigger("email");
+      console.log(isValid);
+      if (isValid) {
+        const exists = await authService.checkEmail(emailValue);
+        if (exists) {
+          setError("email", {
+            type: "manual",
+            message: "Email này đã tồn tại",
+          });
+        }
+      } else {
+        clearErrors("email");
+      }
+    }, 800);
+  }, [emailValue, trigger, setError]);
+
+  return loading ? (
+    <Loading />
+  ) : (
     <div>
-      {loading && <Loading />}
       <div className="d-flex justify-content-center align-items-center vh-100 ">
         <div className="card p-3 w-25 shadow-lg">
           <h2 className="text-center">Đăng kí</h2>
-          {err && <p className="text-danger text-center">{err}</p>}
-          <form onSubmit={handleRegister}>
+          <form onSubmit={handleSubmit(onRegister)}>
             <div className="mb-3">
-              <label className="form-label">Họ và tên</label>
-              <input type="text" className="form-control" onChange={(e) => setFullName(e.target.value)} value={fullName} placeholder="Nhập họ và tên" />
+              <InputText placeholder="Nhập tên để đăng kí" name="firstName" register={register} message={errors.firstName?.message} />
             </div>
             <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input type="email" className="form-control" onChange={(e) => setEmail(e.target.value)} value={email} placeholder="Nhập Email" />
+              <InputText placeholder="Nhập họ để đăng kí" name="lastName" register={register} message={errors.lastName?.message} />
             </div>
             <div className="mb-3">
-              <label className="form-label">Mật khẩu</label>
-              <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Nhập mật khẩu" />
+              <InputText placeholder="Nhập email để đăng kí" name="email" register={register} message={errors.email?.message} />
             </div>
             <div className="mb-3">
-              <label className="form-label">Nhập lại mật khẩu</label>
-              <input type="password" className="form-control" onChange={(e) => setPassword_confirmation(e.target.value)} value={password_confirmation} placeholder="Nhập lại mật khẩu" />
+              <InputText placeholder="Nhập mật khẩu" name="password" register={register} message={errors.password?.message} />
             </div>
-            <button type="submit" className="btn btn-danger w-100" disabled={loading}>
-              Đăng kí
-            </button>
+            <div className="mb-3">
+              <InputText placeholder="Nhập lại mật khẩu" name="password_confirmation" register={register} message={errors.password_confirmation?.message} />
+            </div>
+            <button className="btn btn-danger w-100">Đăng kí</button>
           </form>
         </div>
       </div>

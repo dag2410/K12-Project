@@ -8,6 +8,7 @@ import Products from "../pages/Products";
 import RegisterPage from "@/auth/RegisterPage";
 import LoginPage from "@/auth/LoginPage";
 import Users from "@/pages/Users";
+import Profile from "@/pages/Profile";
 
 const routes = [
   {
@@ -44,6 +45,10 @@ const routes = [
     component: Users,
     protected: true,
     layout: null,
+  },
+  {
+    path: config.routes.profile,
+    component: Profile,
   },
 ];
 export default routes;

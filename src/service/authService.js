@@ -4,17 +4,52 @@ export const getCurrentUser = async () => {
   const response = await httpRequest.get("/auth/me");
   return response;
 };
+
 export const postRegister = async (formData) => {
   const response = await httpRequest.post("/auth/register", formData);
   return response;
 };
-export const postLogOut = async (formData) => {
+
+export const postLogOut = async () => {
   const response = await httpRequest.post("/auth/logout");
   return response;
 };
+
 export const postLogIn = async (email, password) => {
   const response = await httpRequest.post("/auth/login", { email, password });
   return response;
+};
+
+export const editUser = async (username, formData) => {
+  const response = await httpRequest.put(`/users/${username}`, formData);
+  return response;
+};
+
+export const checkEmail = async (email) => {
+  const response = await httpRequest.get("/auth/check-email", {
+    params: {
+      email,
+    },
+  });
+  return response.exists;
+};
+
+export const checkPhone = async (phone) => {
+  const response = await httpRequest.get("/auth/check-phone", {
+    params: {
+      phone,
+    },
+  });
+  return response.exists;
+};
+
+export const checkUserName = async (username) => {
+  const response = await httpRequest.get("/auth/check-username", {
+    params: {
+      username,
+    },
+  });
+  return response.exists;
 };
 
 export default {
@@ -22,4 +57,8 @@ export default {
   postRegister,
   postLogOut,
   postLogIn,
+  checkEmail,
+  checkPhone,
+  checkUserName,
+  editUser,
 };

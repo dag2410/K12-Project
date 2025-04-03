@@ -2,6 +2,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import ScrollTop from "./components/ScrollTop";
 import AppRoutes from "@/components/AppRoutes";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Router>
         <ScrollTop />
         <AppRoutes />
+        <ToastContainer />
       </Router>
     </>
   );

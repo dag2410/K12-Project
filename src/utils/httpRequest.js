@@ -1,19 +1,18 @@
 import axios from "axios";
 
+const token = localStorage.getItem("token");
 const httpRequest = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
+  headers: token ? { Authorization: `Bearer ${token}` } : {},
 });
 
 export const setToken = (token) => {
   localStorage.setItem("token", token);
   httpRequest.defaults.headers["Authorization"] = `Bearer ${token}`;
 };
+
 export const clearToken = () => {
   delete httpRequest.defaults.headers["Authorization"];
-  console.log("Token", httpRequest.defaults.headers);
 };
 
 const send = async (method, url, data, config) => {
@@ -26,7 +25,9 @@ const send = async (method, url, data, config) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      clearToken();
+    }
   }
 };
 
