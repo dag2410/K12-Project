@@ -50,7 +50,7 @@ const LoginPage = () => {
             <InputText placeholder="Nhập email" name="email" register={register} message={errors.email?.message} />
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập mật khẩu" name="password" register={register} message={errors.password?.message} />
+            <InputText type="password" placeholder="Nhập mật khẩu" name="password" register={register} message={errors.password?.message} />
           </div>
           <button type="submit" className="btn btn-danger w-100">
             Đăng nhập

@@ -24,29 +24,29 @@ export const editUser = async (username, formData) => {
   const response = await httpRequest.put(`/users/${username}`, formData);
   return response;
 };
-
-export const checkEmail = async (email) => {
+export const checkEmail = async (email, exclude_id) => {
   const response = await httpRequest.get("/auth/check-email", {
     params: {
       email,
+      exclude_id,
     },
   });
   return response.exists;
 };
-
-export const checkPhone = async (phone) => {
+export const checkPhone = async (phone, exclude_id) => {
   const response = await httpRequest.get("/auth/check-phone", {
     params: {
       phone,
+      exclude_id,
     },
   });
   return response.exists;
 };
-
-export const checkUserName = async (username) => {
+export const checkUserName = async (username, exclude_id) => {
   const response = await httpRequest.get("/auth/check-username", {
     params: {
       username,
+      exclude_id,
     },
   });
   return response.exists;

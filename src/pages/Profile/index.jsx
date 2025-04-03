@@ -64,6 +64,7 @@ const Profile = () => {
   const emailValue = watch("email");
   const phoneValue = watch("phone");
   const usernameValue = watch("username");
+  const userId = user?.id;
 
   useEffect(() => {
     if (!emailValue) return;
@@ -71,7 +72,7 @@ const Profile = () => {
     const timerId = setTimeout(async () => {
       const isValid = await trigger("email");
       if (isValid) {
-        const exists = await authService.checkEmail(emailValue);
+        const exists = await authService.checkEmail(emailValue, userId);
         if (exists) {
           setError("email", {
             type: "manual",
@@ -92,7 +93,7 @@ const Profile = () => {
     const timerId = setTimeout(async () => {
       const isValid = await trigger("phone");
       if (isValid) {
-        const exists = await authService.checkPhone(phoneValue);
+        const exists = await authService.checkPhone(phoneValue, userId);
         if (exists) {
           setError("phone", {
             type: "manual",
@@ -113,7 +114,7 @@ const Profile = () => {
     const timerId = setTimeout(async () => {
       const isValid = await trigger("username");
       if (isValid) {
-        const exists = await authService.checkUserName(usernameValue);
+        const exists = await authService.checkUserName(usernameValue, userId);
         if (exists) {
           setError("username", {
             type: "manual",
