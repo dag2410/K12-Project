@@ -12,6 +12,7 @@ export const setToken = (token) => {
 };
 
 export const clearToken = () => {
+  localStorage.removeItem("token");
   delete httpRequest.defaults.headers["Authorization"];
 };
 
@@ -25,7 +26,7 @@ const send = async (method, url, data, config) => {
     });
     return response.data;
   } catch (error) {
-    if (error.response && error.response.status === 401) {
+    if (error?.response?.status === 401) {
       clearToken();
     }
   }

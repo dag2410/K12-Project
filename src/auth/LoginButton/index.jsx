@@ -1,13 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import LoginPage from "../LoginPage";
 
 const LoginButton = () => {
   const navigate = useNavigate();
+
   const handleLogin = () => {
-    const success = LoginPage();
-    if (success) {
-      navigate("/");
-    }
+    navigate("/login");
   };
   return (
     <button onClick={handleLogin} className="btn btn-danger">

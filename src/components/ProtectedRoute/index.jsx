@@ -1,48 +1,32 @@
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-
+import { useEffect } from "react";
 import config from "@/config";
-import authService from "@/service/authService";
+import useUser from "@/hooks/useUser";
+import { useLocation, useNavigate } from "react-router-dom";
+import useLoading from "@/hooks/useLoading";
+import Loading from "../Loading";
 
 function ProtectedRoute({ children }) {
   const location = useLocation();
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const { isLoading, startLoading, stopLoading } = useLoading();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setIsLoading(false);
+    if (localStorage.getItem("token") || user) {
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        const data = await authService.getCurrentUser();
-        setCurrentUser(data.user);
-      } catch (error) {
-        localStorage.removeItem("token");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!localStorage.getItem("token") || !user) {
+      const path = encodeURIComponent(location.pathname);
+      navigate(`${config.routes.login}?continue=${path}`);
+    }
+  }, [isLoading, user, location.pathname, navigate]);
 
-    fetchData();
-  }, []);
+  if (isLoading) return <Loading />;
 
-  if (isLoading) return <div>Loading...</div>;
-
-  if (!localStorage.getItem("token") || !currentUser) {
-    const path = encodeURIComponent(location.pathname);
-    return <Navigate to={`${config.routes.login}?continue=${path}`} />;
-  }
+  if (!localStorage.getItem("token") || !user) return null;
 
   return children;
 }
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export default ProtectedRoute;

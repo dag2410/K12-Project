@@ -24,6 +24,7 @@ export const editUser = async (username, formData) => {
   const response = await httpRequest.put(`/users/${username}`, formData);
   return response;
 };
+
 export const checkEmail = async (email, exclude_id) => {
   const response = await httpRequest.get("/auth/check-email", {
     params: {
@@ -31,8 +32,9 @@ export const checkEmail = async (email, exclude_id) => {
       exclude_id,
     },
   });
-  return response.exists;
+  return response.data.exists;
 };
+
 export const checkPhone = async (phone, exclude_id) => {
   const response = await httpRequest.get("/auth/check-phone", {
     params: {
@@ -40,16 +42,17 @@ export const checkPhone = async (phone, exclude_id) => {
       exclude_id,
     },
   });
-  return response.exists;
+  return response.data.exists;
 };
-export const checkUserName = async (username, exclude_id) => {
+
+export const checkUsername = async (username, exclude_id) => {
   const response = await httpRequest.get("/auth/check-username", {
     params: {
       username,
       exclude_id,
     },
   });
-  return response.exists;
+  return response.data.exists;
 };
 
 export default {
@@ -59,6 +62,6 @@ export default {
   postLogIn,
   checkEmail,
   checkPhone,
-  checkUserName,
+  checkUsername,
   editUser,
 };

@@ -1,8 +1,6 @@
 import CategoryBar from "@/components/CategoryBar";
 import ListContainer from "@/components/ListContainer";
-import useUser from "@/hooks/useUser";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 function Home() {
   const [url, setUrl] = useState();

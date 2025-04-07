@@ -1,17 +1,18 @@
 import { InputText } from "@/components/InputText";
 import Loading from "@/components/Loading";
+import useDebounce from "@/hooks/useDebounce";
+import useLoading from "@/hooks/useLoading";
 import { registerSchema } from "@/schema";
-import authService, { checkEmail } from "@/service/authService";
+import authService from "@/service/authService";
+import { setToken } from "@/utils/httpRequest";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-let timerId;
-
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { isLoading, startLoading, stopLoading } = useLoading();
   const {
     register,
     handleSubmit,
@@ -32,22 +33,11 @@ const RegisterPage = () => {
   });
 
   const onRegister = async (data) => {
-    setLoading(true);
+    startLoading();
     try {
-      const exists = await authService.checkEmail(data.email);
-      if (exists) {
-        setError("email", {
-          type: "manual",
-          message: "Email này đã tồn tại",
-        });
-        setLoading(false);
-
-        return;
-      }
-
       const response = await authService.postRegister(data);
       if (response.status === "success") {
-        localStorage.setItem("token", response.access_token);
+        setToken(response.data.access_token);
         navigate("/");
       } else {
         setError("email", {
@@ -61,20 +51,21 @@ const RegisterPage = () => {
         message: "Đăng kí thất bại  ",
       });
     } finally {
-      setLoading(false);
+      stopLoading();
     }
   };
 
   const emailValue = watch("email");
+  const debounceValue = useDebounce(emailValue, 800);
 
   useEffect(() => {
     if (!emailValue) return;
-    clearTimeout(timerId);
-    timerId = setTimeout(async () => {
+    const validateEmail = async () => {
       const isValid = await trigger("email");
       console.log(isValid);
       if (isValid) {
-        const exists = await authService.checkEmail(emailValue);
+        const exists = await authService.checkEmail(debounceValue);
+
         if (exists) {
           setError("email", {
             type: "manual",
@@ -84,10 +75,11 @@ const RegisterPage = () => {
       } else {
         clearErrors("email");
       }
-    }, 800);
-  }, [emailValue, trigger, setError]);
+    };
+    validateEmail();
+  }, [emailValue, trigger, setError, debounceValue]);
 
-  return loading ? (
+  return isLoading ? (
     <Loading />
   ) : (
     <div>

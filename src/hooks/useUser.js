@@ -3,6 +3,9 @@ import { UserContext } from "@/context/UserContext";
 
 const useUser = () => {
   const userContext = useContext(UserContext);
-  return userContext.user;
+  return {
+    user: userContext.user,
+    setUser: userContext.setUser,
+  };
 };
 export default useUser;

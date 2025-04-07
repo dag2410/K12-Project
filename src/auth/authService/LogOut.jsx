@@ -1,7 +1,7 @@
 import authService from "@/service/authService";
-import httpRequest, { clearToken } from "@/utils/httpRequest";
+import { clearToken } from "@/utils/httpRequest";
 
-const logOut = async (setToken) => {
+const LogOut = async (setToken) => {
   const token = localStorage.getItem("token");
   if (!token) return;
 
@@ -16,4 +16,4 @@ const logOut = async (setToken) => {
   }
 };
 
-export default logOut;
+export default LogOut;

@@ -1,7 +1,6 @@
+import config from "@/config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import config from "@/config";
 import userService from "@/service/userService";
 
 function Users() {
@@ -9,8 +8,8 @@ function Users() {
 
   useEffect(() => {
     (async () => {
-      const users = await userService.getAll();
-      setUsers(users);
+      const usersData = await userService.getAll();
+      setUsers(usersData.data);
     })();
   }, []);
 

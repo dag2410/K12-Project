@@ -49,6 +49,7 @@ const routes = [
   {
     path: config.routes.profile,
     component: Profile,
+    protected: true,
   },
 ];
 export default routes;
