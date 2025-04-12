@@ -22,6 +22,7 @@ export const postLogIn = async (email, password) => {
 
 export const editUser = async (username, formData) => {
   const response = await httpRequest.put(`/users/${username}`, formData);
+  console.log(response);
   return response;
 };
 

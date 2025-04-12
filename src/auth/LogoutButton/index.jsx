@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
-import useUser from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 import logOut from "../authService/LogOut";
 
 const LogoutButton = () => {
@@ -12,7 +11,7 @@ const LogoutButton = () => {
     }
   };
   return (
-    <Button primary onClick={handleLogout}>
+    <Button primary onClick={handleLogout} className="btn btn-danger">
       Đăng xuất
     </Button>
   );

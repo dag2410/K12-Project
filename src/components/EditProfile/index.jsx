@@ -9,11 +9,10 @@ import { checkEmail, checkPhone, checkUsername, editUser } from "@/service/authS
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditProfile = ({ user, onSubmit, onCancel }) => {
-  const navigate = useNavigate();
   const { username } = useParams();
   const { setUser } = useUser();
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -99,6 +98,8 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
       if (response) {
         toast.success("Cập nhật thông tin thành công!");
         const updatedUser = { ...user, ...data };
+        console.log(updatedUser);
+
         if (response.data.image) {
           updatedUser.image = response.data.image;
         } else if (selectFile) {

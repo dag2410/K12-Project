@@ -88,19 +88,44 @@ const RegisterPage = () => {
           <h2 className="text-center">Đăng kí</h2>
           <form onSubmit={handleSubmit(onRegister)}>
             <div className="mb-3">
-              <InputText placeholder="Nhập tên để đăng kí" name="firstName" register={register} message={errors.firstName?.message} />
+              <InputText
+                placeholder="Nhập tên để đăng kí"
+                name="firstName"
+                register={register}
+                message={errors.firstName?.message}
+              />
             </div>
             <div className="mb-3">
-              <InputText placeholder="Nhập họ để đăng kí" name="lastName" register={register} message={errors.lastName?.message} />
+              <InputText
+                placeholder="Nhập họ để đăng kí"
+                name="lastName"
+                register={register}
+                message={errors.lastName?.message}
+              />
             </div>
             <div className="mb-3">
-              <InputText placeholder="Nhập email để đăng kí" name="email" register={register} message={errors.email?.message} />
+              <InputText
+                placeholder="Nhập email để đăng kí"
+                name="email"
+                register={register}
+                message={errors.email?.message}
+              />
             </div>
             <div className="mb-3">
-              <InputText placeholder="Nhập mật khẩu" name="password" register={register} message={errors.password?.message} />
+              <InputText
+                placeholder="Nhập mật khẩu"
+                name="password"
+                register={register}
+                message={errors.password?.message}
+              />
             </div>
             <div className="mb-3">
-              <InputText placeholder="Nhập lại mật khẩu" name="password_confirmation" register={register} message={errors.password_confirmation?.message} />
+              <InputText
+                placeholder="Nhập lại mật khẩu"
+                name="password_confirmation"
+                register={register}
+                message={errors.password_confirmation?.message}
+              />
             </div>
             <button className="btn btn-danger w-100">Đăng kí</button>
           </form>

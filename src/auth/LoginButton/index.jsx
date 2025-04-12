@@ -7,7 +7,7 @@ const LoginButton = () => {
     navigate("/login");
   };
   return (
-    <button onClick={handleLogin} className="btn btn-danger">
+    <button primary onClick={handleLogin} className="btn btn-danger">
       Đăng Nhập
     </button>
   );

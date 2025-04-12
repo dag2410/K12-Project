@@ -30,7 +30,7 @@ const LoginPage = () => {
   });
 
   const onLogin = async ({ email, password }) => {
-      try {
+    try {
       const res = await authService.postLogIn(email, password);
       setToken(res.data.access_token);
       navigate(query.get("continue") || config.routes.home);
@@ -54,15 +54,32 @@ const LoginPage = () => {
       <div className="d-flex justify-content-center align-items-center vh-100">
         <div className="card p-3 w-25 shadow-lg">
           <h2 className="text-center">Đăng Nhập</h2>
-          {errors.root && <p className="text-danger text-center">{errors.root.message}</p>}
+          {errors.root && (
+            <p className="text-danger text-center">{errors.root.message}</p>
+          )}
           <form onSubmit={handleSubmit(onLogin)}>
             <div className="mb-3">
-              <InputText placeholder="Nhập email" name="email" register={register} message={errors.email?.message} />
+              <InputText
+                placeholder="Nhập email"
+                name="email"
+                register={register}
+                message={errors.email?.message}
+              />
             </div>
             <div className="mb-3">
-              <InputText type="password" placeholder="Nhập mật khẩu" name="password" register={register} message={errors.password?.message} />
+              <InputText
+                type="password"
+                placeholder="Nhập mật khẩu"
+                name="password"
+                register={register}
+                message={errors.password?.message}
+              />
             </div>
-            <button type="submit" className="btn btn-danger w-100" disabled={isLoading}>
+            <button
+              type="submit"
+              className="btn btn-danger w-100"
+              disabled={isLoading}
+            >
               Đăng nhập
             </button>
           </form>

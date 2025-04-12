@@ -3,7 +3,19 @@ import { Link } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./Button.module.scss";
 
-function Button({ children, size = "medium", to = "", href = "", className = "", primary = false, secondary = false, rounded = false, disabled = false, onClick, ...props }) {
+function Button({
+  children,
+  size = "medium",
+  to = "",
+  href = "",
+  className = "",
+  primary = false,
+  secondary = false,
+  rounded = false,
+  disabled = false,
+  onClick,
+  ...props
+}) {
   let Component = "button";
   const passProps = { ...props };
 

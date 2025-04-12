@@ -7,11 +7,11 @@ const RegisterButton = () => {
   const handleRegister = async () => {
     navigate("/register");
   };
-  
+
   return (
-    <Button primary onClick={handleRegister}>
-      Đăng kí
-    </Button>
+    <button primary onClick={handleRegister} className="btn btn-danger">
+      Đăng Kí
+    </button>
   );
 };
 

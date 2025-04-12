@@ -1,12 +1,14 @@
 import { BrowserRouter as Router } from "react-router-dom";
 
-import ScrollTop from "./components/ScrollTop";
 import AppRoutes from "@/components/AppRoutes";
+import React from "react";
 import { ToastContainer } from "react-toastify";
-import { UserProvider } from "./context/UserContext";
+import ScrollTop from "./components/ScrollTop";
 import { LoadingProvider } from "./context/LoadingContext";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
+  
   return (
     <LoadingProvider>
       <UserProvider>

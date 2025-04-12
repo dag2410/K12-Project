@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 
-export const InputText = ({
+export const TextInput = ({
   type = "text",
   name,
-  register = () => ({}),
+  register,
   message,
   placeholder = " ",
 }) => {
@@ -12,7 +12,8 @@ export const InputText = ({
       <input
         className="form-control"
         type={type}
-        {...register(name)}
+        name={name}
+        {...register}
         placeholder={placeholder}
       />
       {message && <p className="text-danger text-center">{message}</p>}
@@ -20,10 +21,10 @@ export const InputText = ({
   );
 };
 
-InputText.propTypes = {
+TextInput.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string.isRequired,
-  register: PropTypes.func,
+  register: PropTypes.ob,
   message: PropTypes.string,
   placeholder: PropTypes.string,
 };

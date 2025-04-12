@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
 const useDebounce = (value, delay) => {
-  const [input, setInput] = useState(value);
+  const [input, setInput] = useState(null);
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timeId = setTimeout(() => {
       setInput(value);
     }, delay);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timeId);
+    };
   }, [value, delay]);
 
   return input;
