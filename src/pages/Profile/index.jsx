@@ -23,7 +23,9 @@ const Profile = () => {
   };
 
   if (!user) {
-    return <div className="alert alert-warning">Không thể tìm thấy người dùng</div>;
+    return (
+      <div className="alert alert-warning">Không thể tìm thấy người dùng</div>
+    );
   }
 
   return (
@@ -39,38 +41,56 @@ const Profile = () => {
           <div className="avatar-section mb-4 text-center">
             <h4>Ảnh đại diện</h4>
             <div className="mb-2">
-              <img src={user.image} alt="Avatar" width={150} height={150} className="rounded-circle" style={{ objectFit: "cover", border: "2px solid #ddd" }} />
+              <img
+                src={user.image}
+                alt="Avatar"
+                width={150}
+                height={150}
+                className="rounded-circle"
+                style={{ objectFit: "cover", border: "2px solid #ddd" }}
+              />
             </div>
           </div>
           <p>
-            <span className="fw-bold">First Name:</span> {getDisplayValue(user.firstName)}
+            <span className="fw-bold">First Name:</span>{" "}
+            {getDisplayValue(user.firstName)}
           </p>
           <p>
-            <span className="fw-bold">Last Name:</span> {getDisplayValue(user.lastName)}
+            <span className="fw-bold">Last Name:</span>{" "}
+            {getDisplayValue(user.lastName)}
           </p>
           <p>
             <span className="fw-bold">Age:</span> {getDisplayValue(user.age)}
           </p>
           <p>
-            <span className="fw-bold">Gender:</span> {getDisplayValue(user.gender)}
+            <span className="fw-bold">Gender:</span>{" "}
+            {getDisplayValue(user.gender)}
           </p>
           <p>
-            <span className="fw-bold">Email:</span> {getDisplayValue(user.email)}
+            <span className="fw-bold">Email:</span>{" "}
+            {getDisplayValue(user.email)}
           </p>
           <p>
-            <span className="fw-bold">Phone:</span> {getDisplayValue(user.phone)}
+            <span className="fw-bold">Phone:</span>{" "}
+            {getDisplayValue(user.phone)}
           </p>
           <p>
-            <span className="fw-bold">Username:</span> {getDisplayValue(user.username)}
+            <span className="fw-bold">Username:</span>{" "}
+            {getDisplayValue(user.username)}
           </p>
           <p>
-            <span className="fw-bold">Birth Date:</span> {getDisplayValue(user.birthDate)}
+            <span className="fw-bold">Birth Date:</span>{" "}
+            {getDisplayValue(user.birthDate)}
           </p>
           <p>
-            <span className="fw-bold">Email Verified At:</span> {user.emailVerifiedAt ? "Tài khoản đã được xác minh" : "Tài khoản chưa xác minh"}
+            <span className="fw-bold">Email Verified At:</span>{" "}
+            {user.emailVerifiedAt
+              ? "Tài khoản đã được xác minh"
+              : "Tài khoản chưa xác minh"}
           </p>
           <p>
-            <span className="fw-bold">Created At:</span> {new Date(user.createdAt).toLocaleString()}
+            <span className="fw-bold">Created At:</span>{" "}
+            {new Date(user.createdAt).toLocaleString()}
           </p>
           <Button primary size="medium" onClick={() => setIsEditing(true)}>
             Sửa thông tin

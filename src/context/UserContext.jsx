@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
       } catch (error) {
         console.log(error);
       } finally {
-        stopLoading;
+        stopLoading();
       }
     };
     fetchUser();

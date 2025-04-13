@@ -1,6 +1,10 @@
 import * as httpRequest from "@/utils/httpRequest";
 
 export const getCurrentUser = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
   const response = await httpRequest.get("/auth/me");
   return response;
 };
@@ -22,7 +26,6 @@ export const postLogIn = async (email, password) => {
 
 export const editUser = async (username, formData) => {
   const response = await httpRequest.put(`/users/${username}`, formData);
-  console.log(response);
   return response;
 };
 

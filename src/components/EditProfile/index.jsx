@@ -5,14 +5,20 @@ import useDebounce from "@/hooks/useDebounce";
 import useLoading from "@/hooks/useLoading";
 import useUser from "@/hooks/useUser";
 import { editSchema } from "@/schema";
-import { checkEmail, checkPhone, checkUsername, editUser } from "@/service/authService";
+import {
+  checkEmail,
+  checkPhone,
+  checkUsername,
+  editUser,
+} from "@/service/authService";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const EditProfile = ({ user, onSubmit, onCancel }) => {
+  const navigate = useNavigate();
   const { username } = useParams();
   const { setUser } = useUser();
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -98,8 +104,6 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
       if (response) {
         toast.success("Cập nhật thông tin thành công!");
         const updatedUser = { ...user, ...data };
-        console.log(updatedUser);
-
         if (response.data.image) {
           updatedUser.image = response.data.image;
         } else if (selectFile) {
@@ -112,7 +116,9 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
         onCancel();
         reset(updatedUser);
       } else {
-        toast.error(response?.message || "Cập nhật thất bại. Vui lòng thử lại.");
+        toast.error(
+          response?.message || "Cập nhật thất bại. Vui lòng thử lại."
+        );
       }
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
@@ -203,9 +209,21 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
           <div className="mb-3 text-center">
             <label className="form-label">Ảnh đại diện</label>
             <div className="mb-2">
-              <img src={preview || originalAvatar} alt="Preview" width={150} height={150} className="rounded-circle" style={{ objectFit: "cover", border: "2px solid #ddd" }} />
+              <img
+                src={preview || originalAvatar}
+                alt="Preview"
+                width={150}
+                height={150}
+                className="rounded-circle"
+                style={{ objectFit: "cover", border: "2px solid #ddd" }}
+              />
             </div>
-            <input type="file" accept="image/*" onChange={handleFileChange} className="form-control mb-2" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="form-control mb-2"
+            />
             {preview && (
               <div className="mt-2">
                 <Button size="small" onClick={handleCancel}>
@@ -216,13 +234,28 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
           </div>
 
           <div className="mb-3">
-            <InputText placeholder="Nhập tên" name="firstName" register={register} message={errors.firstName?.message} />
+            <InputText
+              placeholder="Nhập tên"
+              name="firstName"
+              register={register}
+              message={errors.firstName?.message}
+            />
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập họ" name="lastName" register={register} message={errors.lastName?.message} />
+            <InputText
+              placeholder="Nhập họ"
+              name="lastName"
+              register={register}
+              message={errors.lastName?.message}
+            />
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập tuổi" name="age" register={register} message={errors.age?.message} />
+            <InputText
+              placeholder="Nhập tuổi"
+              name="age"
+              register={register}
+              message={errors.age?.message}
+            />
           </div>
           <div className="mb-3">
             <label htmlFor="gender" className="form-label">
@@ -233,25 +266,53 @@ const EditProfile = ({ user, onSubmit, onCancel }) => {
               <option value="male">Nam</option>
               <option value="female">Nữ</option>
             </select>
-            {errors.gender && <div className="text-danger">{errors.gender.message}</div>}
+            {errors.gender && (
+              <div className="text-danger">{errors.gender.message}</div>
+            )}
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập email" name="email" register={register} message={errors.email?.message} />
+            <InputText
+              placeholder="Nhập email"
+              name="email"
+              register={register}
+              message={errors.email?.message}
+            />
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập số điện thoại" name="phone" register={register} message={errors.phone?.message} />
+            <InputText
+              placeholder="Nhập số điện thoại"
+              name="phone"
+              register={register}
+              message={errors.phone?.message}
+            />
           </div>
           <div className="mb-3">
-            <InputText placeholder="Nhập username" name="username" register={register} message={errors.username?.message} />
+            <InputText
+              placeholder="Nhập username"
+              name="username"
+              register={register}
+              message={errors.username?.message}
+            />
           </div>
           <div className="mb-3">
-            <InputText type="date" name="birthDate" register={register} message={errors.birthDate?.message} placeholder="Nhập ngày sinh" />
+            <InputText
+              type="date"
+              name="birthDate"
+              register={register}
+              message={errors.birthDate?.message}
+              placeholder="Nhập ngày sinh"
+            />
           </div>
           <div className="d-flex gap-3">
             <Button primary size="medium" type="submit" disabled={isLoading}>
               Lưu thông tin
             </Button>
-            <Button primary size="medium" onClick={onCancel} disabled={isLoading}>
+            <Button
+              primary
+              size="medium"
+              onClick={onCancel}
+              disabled={isLoading}
+            >
               Hủy
             </Button>
           </div>

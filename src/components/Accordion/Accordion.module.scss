@@ -8,6 +8,10 @@
   font-weight: bold;
   background: #f9f9f9;
   cursor: pointer;
+  &:focus {
+    outline: none;
+    background-color: #967777;
+  }
 }
 .accordionBody {
   padding: 1rem;

@@ -1,10 +1,11 @@
-import { Accordion } from "@/components/Accordion/Accordion";
-import { AccordionItem } from "@/components/Accordion/AccordionItem";
 import CategoryBar from "@/components/CategoryBar";
 import ListContainer from "@/components/ListContainer";
 import { Tab, Tabs } from "@/components/Tabs";
 
 import React, { useEffect, useState } from "react";
+import Products from "../Products";
+import AccordionItem from "@/components/Accordion/AccordionItem";
+import Accordion from "@/components/Accordion/Accordion";
 
 function Home() {
   // const [url, setUrl] = useState();
@@ -74,8 +75,12 @@ function Home() {
         <AccordionItem header="Accordion 2">Nội dung 2</AccordionItem>
         <AccordionItem header="Accordion 3">Nội dung 3</AccordionItem>
       </Accordion>
+      <CategoryBar />
+      <ListContainer />
     </>
   );
+
+  <></>;
 
   //vi du cho reactElements
   // React.createElement(
