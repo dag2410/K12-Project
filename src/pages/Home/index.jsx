@@ -2,10 +2,14 @@ import CategoryBar from "@/components/CategoryBar";
 import ListContainer from "@/components/ListContainer";
 import { Tab, Tabs } from "@/components/Tabs";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Products from "../Products";
 import AccordionItem from "@/components/Accordion/AccordionItem";
 import Accordion from "@/components/Accordion/Accordion";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { UserContext } from "@/context/UserContext";
+import { setCurrentUser } from "@/reducers/auth/actions";
+import authService from "@/service/authService";
 
 function Home() {
   // const [url, setUrl] = useState();
@@ -52,7 +56,7 @@ function Home() {
 
   return (
     <>
-      <Tabs
+      {/* <Tabs
         defaultIndex={0}
         onChange={(index) => {
           console.log(index);
@@ -74,13 +78,11 @@ function Home() {
         <AccordionItem header="Accordion 1">Nội dung 1</AccordionItem>
         <AccordionItem header="Accordion 2">Nội dung 2</AccordionItem>
         <AccordionItem header="Accordion 3">Nội dung 3</AccordionItem>
-      </Accordion>
+      </Accordion> */}
       <CategoryBar />
       <ListContainer />
     </>
   );
-
-  <></>;
 
   //vi du cho reactElements
   // React.createElement(

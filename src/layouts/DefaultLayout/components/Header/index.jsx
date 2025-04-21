@@ -70,15 +70,15 @@ const Header = () => {
         </NavLink>
         <SearchBar />
 
-        {!isLogged ? (
-          <div className="d-flex align-items-center gap-3">
-            <UserNavigation />
-            <LogoutButton />
-          </div>
-        ) : (
+        {isLogged ? (
           <div className="d-flex gap-3">
             <LoginButton />
             <RegisterButton />
+          </div>
+        ) : (
+          <div className="d-flex align-items-center gap-3">
+            <UserNavigation />
+            <LogoutButton />
           </div>
         )}
       </div>

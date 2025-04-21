@@ -9,7 +9,6 @@ function Tabs({
   onChange = defaultFn,
   className = "",
 }) {
-  
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const prevIndex = useRef(defaultIndex);
   const tabs = React.Children.toArray(children);
