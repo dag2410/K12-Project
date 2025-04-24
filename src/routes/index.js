@@ -1,14 +1,17 @@
-import NoFooterLayout from "@/layouts/NoFooterLayout";
-import NoHeaderLayout from "@/layouts/NoHeaderLayout";
-import config from "../config";
-import Home from "../pages/Home";
-import NotFound from "../pages/NotFoundPage";
-import ProductDetail from "../pages/ProductDetail";
-import Products from "../pages/Products";
-import RegisterPage from "@/auth/RegisterPage";
-import LoginPage from "@/auth/LoginPage";
+import config from "@/config";
+
+import Home from "@/pages/Home";
 import Users from "@/pages/Users";
 import Profile from "@/pages/Profile";
+import Products from "@/pages/Products";
+import NotFound from "@/pages/NotFoundPage";
+import ProductDetail from "@/pages/ProductDetail";
+
+import LoginPage from "@/auth/LoginPage";
+import RegisterPage from "@/auth/RegisterPage";
+
+import NoFooterLayout from "@/layouts/NoFooterLayout";
+import NoHeaderLayout from "@/layouts/NoHeaderLayout";
 
 const routes = [
   {

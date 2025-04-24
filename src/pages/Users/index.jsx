@@ -1,6 +1,6 @@
 import config from "@/config";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import userService from "@/service/userService";
 
 function Users() {
@@ -19,7 +19,9 @@ function Users() {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            <Link to={`${config.routes.users}/${user.username}`}>{user.firstName}</Link>
+            <Link to={`${config.routes.users}/${user.username}`}>
+              {user.firstName}
+            </Link>
           </li>
         ))}
       </ul>

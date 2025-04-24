@@ -1,37 +1,28 @@
-// import { thunk } from "redux-thunk";
-// import { logger } from "redux-logger";
-// const initState = {};
-
-import authReducer from "@/features/auth/authSlice";
-import { configureStore, Tuple } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import storage from "redux-persist/lib/storage";
-import { thunk } from "redux-thunk";
+import authReducer from "@/features/auth/authSlice";
+import persistStore from "redux-persist/es/persistStore";
+import { profileApi } from "@/features/profile/profileSlice";
+import persistReducer from "redux-persist/es/persistReducer";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-// const rootReducer = combineReducers({
-//   product: productReducer,
-//   auth: authReducer,
-// });
+const rootConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"],
+};
 
-// const store = legacy_createStore(
-//   rootReducer,
-//   initState,
-//   applyMiddleware(thunk, logger)
-// );
-// window.store = store;
-
-const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    // product: productReducer,
-  },
-  // middleware: () => new Tuple(thunk, logger),
+const rootReducer = combineReducers({
+  auth: authReducer,
+  [profileApi.reducerPath]: profileApi.reducer,
 });
 
+export const store = configureStore({
+  reducer: persistReducer(rootConfig, rootReducer),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(logger, profileApi.middleware),
+});
 
-// const persistConfig = {
-//   key: "root",
-//   storage,
-// };
-
-export default store;
+export const persistor = persistStore(store);

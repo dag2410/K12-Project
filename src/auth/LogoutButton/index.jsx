@@ -8,6 +8,7 @@ const LogoutButton = () => {
     const success = await logOut();
     if (success) {
       navigate("/");
+      
     }
   };
   return (

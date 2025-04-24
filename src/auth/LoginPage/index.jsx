@@ -1,20 +1,29 @@
-import { InputText } from "@/components/InputText";
-import Loading from "@/components/Loading";
-import config from "@/config";
-import useLoading from "@/hooks/useLoading";
-import useQuery from "@/hooks/useQuery";
-import { loginSchema } from "@/schema";
-import authService from "@/service/authService";
-import { setToken } from "@/utils/httpRequest";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import config from "@/config";
+import { loginSchema } from "@/schema";
+import useQuery from "@/hooks/useQuery";
+import Loading from "@/components/Loading";
+import useLoading from "@/hooks/useLoading";
+import { setToken } from "@/utils/httpRequest";
+import authService from "@/service/authService";
+import { InputText } from "@/components/InputText";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { getCurrentUser } from "@/features/auth/authAsync";
 
 const LoginPage = () => {
   const query = useQuery();
   const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const dispatch = useDispatch();
+  const isLoggerIn = useSelector((state) => state.auth.isLoggerIn);
+
+  if (isLoggerIn) {
+    return <Navigate to="/" />;
+  }
 
   const {
     register,
@@ -35,6 +44,7 @@ const LoginPage = () => {
       setToken(res.data.access_token);
       navigate(query.get("continue") || config.routes.home);
       toast.success("Đăng nhập thành công");
+      dispatch(getCurrentUser());
     } catch (error) {
       if (error.response && error.response.status === "error") {
         toast.error("Đăng nhập thất bại. Vui lòng thử lại.");

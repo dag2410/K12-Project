@@ -1,28 +1,88 @@
-import authService from "@/service/authService";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { actions as getCurrentUser } from "@/reducers/auth";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getCurrentUser,
+  postRegister,
+  postLogOut,
+  postLogIn,
+} from "./authAsync";
 
-export const getCurrentUser = createAsyncThunk(
-  "users/getCurrentUser",
-  async () => {
-    const res = await authService.getCurrentUser();
-    return res.data;
-  }
-);
+const initialState = {
+  currentUser: null,
+  isLoading: false,
+  isLoggerIn: false,
+  error: null,
+};
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: null,
-
+  initialState,
+  reducers: {
+    logout: (state) => {
+      state.currentUser = null;
+      state.isLoggerIn = false;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder
+      // Get current user
+      .addCase(getCurrentUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+        state.isLoggerIn = true;
+        state.isLoading = false;
+      })
+      .addCase(getCurrentUser.rejected, (state) => {
+        state.isLoading = false;
+        state.currentUser = null;
+        state.isLoggerIn = false;
+      })
+
+      // Register new user
+      .addCase(postRegister.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postRegister.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+        state.isLoggerIn = true;
+        state.isLoading = false;
+      })
+      .addCase(postRegister.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      // Log out
+      .addCase(postLogOut.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postLogOut.fulfilled, (state) => {
+        state.currentUser = null;
+        state.isLoggerIn = false;
+        state.isLoading = false;
+      })
+      .addCase(postLogOut.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      // Log in
+      .addCase(postLogIn.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postLogIn.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+        state.isLoggerIn = true;
+        state.isLoading = false;
+      })
+      .addCase(postLogIn.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
   },
 });
 
-const { action, reducer } = authSlice;
-
-// export const {} = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

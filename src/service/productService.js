@@ -9,7 +9,7 @@ export const getOne = async (id) => {
   const response = await httpRequest.get(`/products/${id}`);
   return response;
 };
- 
+
 export const update = async (id, data) => {
   const response = await httpRequest.put(`/products/${id}`, data);
   return response;

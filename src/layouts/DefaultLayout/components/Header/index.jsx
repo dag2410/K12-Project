@@ -2,7 +2,8 @@ import logo from "@/assets/images/logo.png";
 import LoginButton from "@/auth/LoginButton";
 import LogoutButton from "@/auth/LogoutButton";
 import RegisterButton from "@/auth/RegisterButton";
-import React, { createElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styles from "./Header.module.scss";
 import SearchBar from "./SearchBar/index";
@@ -10,6 +11,8 @@ import UserNavigation from "./UserNavigation/index";
 // import { Tabs, Tab } from "@/components/Tabs";
 
 const Header = () => {
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
   const token = localStorage.getItem("token");
   const [isLogged, setIsLogged] = useState(true);
   useEffect(() => {
@@ -82,6 +85,7 @@ const Header = () => {
           </div>
         )}
       </div>
+      {currentUser && <p>hi {currentUser?.lastName}</p>}
     </header>
   );
 };

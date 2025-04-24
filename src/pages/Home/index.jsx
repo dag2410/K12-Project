@@ -8,7 +8,6 @@ import AccordionItem from "@/components/Accordion/AccordionItem";
 import Accordion from "@/components/Accordion/Accordion";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { UserContext } from "@/context/UserContext";
-import { setCurrentUser } from "@/reducers/auth/actions";
 import authService from "@/service/authService";
 
 function Home() {
