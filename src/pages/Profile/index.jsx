@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 import EditProfile from "@/components/EditProfile";
 
 const Profile = () => {
-  const { user } = useUser();
+  const user = useUser();
   //ve sua
   const [isEditing, setIsEditing] = useState(false);
 

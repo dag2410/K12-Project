@@ -2,6 +2,7 @@ import * as httpRequest from "@/utils/httpRequest";
 
 export const getAll = async () => {
   const response = await httpRequest.get("/products");
+  console.log(response);
   return response;
 };
 

@@ -8,7 +8,7 @@ import Loading from "../Loading";
 function ProtectedRoute({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useUser();
+  const user = useUser();
   const { isLoading, startLoading, stopLoading } = useLoading();
 
   useEffect(() => {

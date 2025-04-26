@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAll, getOne, update, del } from "./productsAsync"; // Nhập các async actions
+import { getAll, getOne, update, del } from "@/features/product/productAsync";
 
 const initialState = {
   products: [],

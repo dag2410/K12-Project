@@ -9,7 +9,7 @@ import useQuery from "@/hooks/useQuery";
 import Loading from "@/components/Loading";
 import useLoading from "@/hooks/useLoading";
 import { setToken } from "@/utils/httpRequest";
-import authService from "@/service/authService";
+// import authService from "@/service/authService";
 import { InputText } from "@/components/InputText";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getCurrentUser } from "@/features/auth/authAsync";
@@ -17,8 +17,8 @@ import { getCurrentUser } from "@/features/auth/authAsync";
 const LoginPage = () => {
   const query = useQuery();
   const navigate = useNavigate();
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const dispatch = useDispatch();
+  const { isLoading, startLoading, stopLoading } = useLoading();
   const isLoggerIn = useSelector((state) => state.auth.isLoggerIn);
 
   if (isLoggerIn) {
@@ -39,6 +39,7 @@ const LoginPage = () => {
   });
 
   const onLogin = async ({ email, password }) => {
+    startLoading();
     try {
       const res = await authService.postLogIn(email, password);
       setToken(res.data.access_token);

@@ -1,23 +1,29 @@
-import productService from "@/service/productService";
-import { useEffect, useState } from "react";
+import Loading from "@/components/Loading";
+import { getOne } from "@/features/product/productAsync";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 function ProductDetail() {
-  const [product, setProduct] = useState({});
+  const dispatch = useDispatch();
   const params = useParams();
 
+  const { currentProduct, isLoading, error } = useSelector(
+    (state) => state.products
+  );
+
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await productService.getOne(params.slug);
-      setProduct(res);
-    };
-    fetchData();
-  }, [params.slug]);
+    dispatch(getOne(params.slug));
+  }, [dispatch]);
+
+  if (isLoading) return <Loading />;
+  if (error) return <p>Không thể tạo dữ liệu </p>;
+  if (!currentProduct) return <p>Không tìm thấy sản phẩm </p>;
 
   return (
     <div>
-      <h1>{product.title}</h1>
-      <img src={product.thumbnail}></img>
+      <h1>{currentProduct.title}</h1>
+      <img src={currentProduct.thumbnail} alt={currentProduct.title}></img>
     </div>
   );
 }

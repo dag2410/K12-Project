@@ -1,6 +1,7 @@
 import baseQuery from "@/service/baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
+//RTK query
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery,

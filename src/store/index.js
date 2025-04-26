@@ -1,6 +1,7 @@
 import logger from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import authReducer from "@/features/auth/authSlice";
+import productsReducer from "@/features/product/productSlice";
 import persistStore from "redux-persist/es/persistStore";
 import { profileApi } from "@/features/profile/profileSlice";
 import persistReducer from "redux-persist/es/persistReducer";
@@ -14,6 +15,7 @@ const rootConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  products: productsReducer,
   [profileApi.reducerPath]: profileApi.reducer,
 });
 
