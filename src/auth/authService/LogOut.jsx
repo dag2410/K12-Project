@@ -7,7 +7,6 @@ const LogOut = async (setToken) => {
 
   try {
     await authService.postLogOut();
-    localStorage.removeItem("token");
     clearToken();
     return true;
   } catch (error) {

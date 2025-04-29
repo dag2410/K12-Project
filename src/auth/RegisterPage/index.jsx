@@ -4,9 +4,8 @@ import useDebounce from "@/hooks/useDebounce";
 import useLoading from "@/hooks/useLoading";
 import { registerSchema } from "@/schema";
 import authService from "@/service/authService";
-import { setToken } from "@/utils/httpRequest";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +36,6 @@ const RegisterPage = () => {
     try {
       const response = await authService.postRegister(data);
       if (response.status === "success") {
-        setToken(response.data.access_token);
         navigate("/");
       } else {
         setError("email", {

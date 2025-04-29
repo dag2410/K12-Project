@@ -1,26 +1,84 @@
 import axios from "axios";
 
-const token = localStorage.getItem("token");
+let isRefreshing = false;
+let tokenListeners = [];
+
 const httpRequest = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  headers: token ? { Authorization: `Bearer ${token}` } : {},
 });
 
-export const setToken = (token) => {
-  localStorage.setItem("token", token);
-  httpRequest.defaults.headers["Authorization"] = `Bearer ${token}`;
-};
+httpRequest.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+httpRequest.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    const shouldRenewToken = error.response?.status === 401 && refreshToken;
+
+    if (shouldRenewToken) {
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const res = await axios.post(
+            `${import.meta.env.VITE_BASE_URL}/auth/refresh-token`,
+            {
+              refresh_token: refreshToken,
+            }
+          );
+          const data = res.data.data;
+
+          localStorage.setItem("token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
+
+          tokenListeners.forEach((listener) => listener());
+          tokenListeners = [];
+
+          isRefreshing = false;
+
+          return httpRequest(error.config);
+        } catch (error) {
+          isRefreshing = false;
+
+          tokenListeners = [];
+
+          localStorage.removeItem("token");
+          localStorage.removeItem("refresh_token");
+        }
+      } else {
+        return new Promise((resolve) => {
+          tokenListeners.push(() => {
+            resolve(httpRequest(error.config));
+          });
+        });
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export const clearToken = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("refresh_token");
   delete httpRequest.defaults.headers["Authorization"];
 };
 
 const send = async (method, url, data, config) => {
+  const isPutOrPatch = ["put", "patch"].includes(method.toLowerCase());
+  const effectiveMethod = isPutOrPatch ? "post" : method;
+  const effectivePath = isPutOrPatch
+    ? `${url}${url.includes("?") ? "&" : "?"}_method=${method}`
+    : url;
   try {
     const response = await httpRequest.request({
-      method,
-      url,
+      method: effectiveMethod,
+      url: effectivePath,
       data,
       ...config,
     });
@@ -58,6 +116,5 @@ export default {
   put,
   patch,
   del,
-  setToken,
   clearToken,
 };

@@ -7,14 +7,10 @@ export const profileApi = createApi({
   baseQuery,
   endpoints: (build) => ({
     getProfilesAll: build.query({
-      query: () => {
-        `/users`;
-      },
+      query: () => `/users`,
     }),
     getProfileOne: build.query({
-      query: (id) => {
-        `/users/${id}`;
-      },
+      query: (id) => `/users/${id}`,
     }),
     updateProfile: build.mutation({
       query: ({ username, ...body }) => ({
@@ -24,7 +20,11 @@ export const profileApi = createApi({
       }),
     }),
   }),
-  refetchOnFocus: true,
+  defaultOptions: {
+    queries: {
+      refetchOnFocus: true,
+    },
+  },
 });
 
 export const {

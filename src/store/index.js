@@ -24,7 +24,10 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(logger, profileApi.middleware),
+    }).concat(
+      // logger,
+      profileApi.middleware
+    ),
 });
 
 export const persistor = persistStore(store);

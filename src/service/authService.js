@@ -1,10 +1,6 @@
 import * as httpRequest from "@/utils/httpRequest";
 
 export const getCurrentUser = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return;
-  }
   const response = await httpRequest.get("/auth/me");
   return response;
 };

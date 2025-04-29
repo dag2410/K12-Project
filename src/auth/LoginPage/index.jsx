@@ -1,18 +1,17 @@
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import config from "@/config";
-import { loginSchema } from "@/schema";
-import useQuery from "@/hooks/useQuery";
-import Loading from "@/components/Loading";
-import useLoading from "@/hooks/useLoading";
-import { setToken } from "@/utils/httpRequest";
-// import authService from "@/service/authService";
 import { InputText } from "@/components/InputText";
-import { yupResolver } from "@hookform/resolvers/yup";
+import Loading from "@/components/Loading";
+import config from "@/config";
 import { getCurrentUser } from "@/features/auth/authAsync";
+import useLoading from "@/hooks/useLoading";
+import useQuery from "@/hooks/useQuery";
+import { loginSchema } from "@/schema";
+import authService from "@/service/authService";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const LoginPage = () => {
   const query = useQuery();
@@ -42,7 +41,7 @@ const LoginPage = () => {
     startLoading();
     try {
       const res = await authService.postLogIn(email, password);
-      setToken(res.data.access_token);
+      localStorage.setItem("refresh_token", res.data.refresh_token);
       navigate(query.get("continue") || config.routes.home);
       toast.success("Đăng nhập thành công");
       dispatch(getCurrentUser());
